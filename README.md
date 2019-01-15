@@ -10,7 +10,7 @@ A simple html & js app for managing phone-book
 
 ## Live preview
 
-Open [https://nmatei.github.io/phone-book-html](https://nmatei.github.io/phone-book-html)
+Open [https://nmatei.github.io/phone-book-html/](https://nmatei.github.io/phone-book-html/)
 
 ## Configure the app (API)
 
