@@ -2,10 +2,10 @@ var editId;
 
 // TODO edit API url's
 var API_URL = {
-    CREATE: '/api/add.json',
-    READ: '/api/list.json',
-    UPDATE: '/api/update.json',
-    DELETE: '/api/delete.json'
+    CREATE: './api/add.json',
+    READ: './api/list.json',
+    UPDATE: './api/update.json',
+    DELETE: './api/delete.json'
 };
 
 window.PhoneBook = {
