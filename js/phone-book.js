@@ -110,6 +110,7 @@ window.PhoneBook = {
     },
 
     edit: function (id) {
+        // ES5 function systax inside find
         var editPerson = persons.find(function (person) {
             console.log(person.firstName);
             return person.id == id;
@@ -137,6 +138,7 @@ window.PhoneBook = {
         window.persons = persons;
         var rows = '';
 
+        // ES6 function systax inside forEach
         persons.forEach(person => rows += PhoneBook.getRow(person));
         rows += PhoneBook.getActionRow();
         $('#phone-book tbody').html(rows);
