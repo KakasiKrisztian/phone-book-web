@@ -30,6 +30,10 @@ header {
     background-color: white;
 }
 
+a {
+    color: #00B7FF;
+}
+
 #logo {
     text-decoration: none;
     float: left;

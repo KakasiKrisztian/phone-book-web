@@ -19,3 +19,10 @@ th {
 .add-form {
     padding: 10px 0;
 }
+
+.add-form a {
+    text-decoration: none;
+}
+.add-form a:hover {
+    text-decoration: underline;
+}
