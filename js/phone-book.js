@@ -117,7 +117,8 @@ window.PhoneBook = {
         console.warn('edit', editPerson);
 
         if (editId) {
-            $('#phone-book tbody tr:last-child() td:last-child()').append(`<button onclick="PhoneBook.cancelEdit(this)">Cancel</button>`);
+            const cancelBtn = `<button onclick="PhoneBook.cancelEdit(this)">Cancel</button>`;
+            $('#phone-book tbody tr:last-child() td:last-child()').append(cancelBtn);
         }
 
         $('input[name=firstName]').val(editPerson.firstName);
