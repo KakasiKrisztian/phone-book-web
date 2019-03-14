@@ -1,4 +1,10 @@
 /* http://www.w3schools.com/css/tryit.asp?filename=trycss_table_color */
+
+#search {
+    padding: 4px;
+    width: 300px;
+}
+
 table {
     border-collapse: collapse;
     width: 100%;
@@ -25,4 +31,9 @@ th {
 }
 .add-form a:hover {
     text-decoration: underline;
+}
+
+.add-form td input {
+  width: 100%;
+  padding: 4px;
 }

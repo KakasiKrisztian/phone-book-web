@@ -59,6 +59,11 @@
             <div id="breadcrumb">Phone Book</div>
 
             <form class="add-form" action="" onsubmit="return false" method="post">
+
+                <div style="padding-bottom: 5px">
+                    <input type="text" id="search" placeholder="Search">
+                    <label for="search">&#128270;</label>
+                </div>
                 <table id="phone-book">
                     <thead>
                     <tr>
@@ -71,6 +76,14 @@
                     <tbody>
 
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td><input type="text" required name="firstName" placeholder="Enter first name"></td>
+                            <td><input type="text" name="lastName" placeholder="Enter last name"></td>
+                            <td><input type="text" required name="phone" placeholder="Enter phone"></td>
+                            <td><button type="submit">Save</button></td>
+                        </tr>
+                    </tfoot>
                 </table>
             </form>
         </div>

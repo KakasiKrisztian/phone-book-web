@@ -1,11 +1,18 @@
+var persons = [];
 var editId;
 
-// TODO edit API url's
-var API_URL = {
-    CREATE: './api/add.json',
-    READ: './api/list.json',
-    UPDATE: './api/update.json',
-    DELETE: './api/delete.json'
+// TODO edit API url's & ACTION_METHODS
+const API = {
+    CREATE: "./api/add.json",
+    READ: "./api/list.json",
+    UPDATE: "./api/update.json",
+    DELETE: "./api/delete.json"
+};
+const ACTION_METHODS = {
+    CREATE: "GET",
+    READ: "GET",
+    UPDATE: "GET",
+    DELETE: "GET"
 };
 
 window.PhoneBook = {
@@ -24,28 +31,20 @@ window.PhoneBook = {
 
     load: function () {
         $.ajax({
-            url: API_URL.READ,
-            method: "GET"
+            url: API.READ,
+            method: ACTION_METHODS.READ
         }).done(function (persons) {
             console.info('done:', persons);
+            // save in persons as global variable
+            window.persons = persons;
             PhoneBook.display(persons);
         });
     },
 
-    getActionRow: function() {
-        // ES5 string concatenation
-        return '<tr>' +
-            '<td><input type="text" required name="firstName" placeholder="Enter first name"></td>' +
-            '<td><input type="text" name="lastName" placeholder="Enter last name"></td>' +
-            '<td><input type="text" required name="phone" placeholder="Enter phone"></td>' +
-            '<td><button type="submit">Save</button></td>' +
-            '</tr>';
-    },
-
     delete: function(id) {
         $.ajax({
-            url: API_URL.DELETE,
-            method: "POST",
+            url: API.DELETE,
+            method: ACTION_METHODS.DELETE,
             data: {
                 id: id
             }
@@ -58,8 +57,8 @@ window.PhoneBook = {
 
     add: function(person) {
         $.ajax({
-            url: API_URL.CREATE,
-            method: "POST",
+            url: API.CREATE,
+            method: ACTION_METHODS.CREATE,
             data: person
         }).done(function (response) {
             if (response.success) {
@@ -70,8 +69,8 @@ window.PhoneBook = {
 
     save: function(person) {
         $.ajax({
-            url: API_URL.UPDATE,
-            method: "POST",
+            url: API.UPDATE,
+            method: ACTION_METHODS.UPDATE,
             data: person
         }).done(function (response) {
             if (response.success) {
@@ -93,7 +92,7 @@ window.PhoneBook = {
             PhoneBook.delete(id);
         });
 
-        $( ".add-form" ).submit(function() {
+        $(".add-form").submit(function() {
             const person = {
                 firstName: $('input[name=firstName]').val(),
                 lastName: $('input[name=lastName]').val(),
@@ -106,6 +105,12 @@ window.PhoneBook = {
             } else {
                 PhoneBook.add(person);
             }
+        });
+
+        document.getElementById('search').addEventListener('input', function(ev) {
+            //const value = document.getElementById('search').value;
+            const value = this.value;
+            PhoneBook.search(value);
         });
     },
 
@@ -135,17 +140,31 @@ window.PhoneBook = {
     },
 
     display: function(persons) {
-        window.persons = persons;
         var rows = '';
 
         // ES6 function systax inside forEach
         persons.forEach(person => rows += PhoneBook.getRow(person));
-        rows += PhoneBook.getActionRow();
+
         $('#phone-book tbody').html(rows);
+    },
+
+    search: function (value) {
+        value = value.toLowerCase();
+        
+        var filtered = persons.filter(function (person) {
+            return person.firstName.toLowerCase().includes(value) ||
+                person.lastName.toLowerCase().includes(value) ||
+                person.phone.toLowerCase().includes(value);
+        });
+    
+        PhoneBook.display(filtered);
     }
 };
 
-var persons = [];
+
+// TODO update/remove/add items
+//window.PhoneBookLocalActions = {}
+
 console.info('loading persons');
 PhoneBook.load();
 PhoneBook.bindEvents();
