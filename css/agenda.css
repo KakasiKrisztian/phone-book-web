@@ -37,3 +37,7 @@ th {
   width: 100%;
   padding: 4px;
 }
+.add-form button {
+    padding: 2px 4px;
+    min-width: 30px;
+}

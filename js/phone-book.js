@@ -35,8 +35,7 @@ window.PhoneBook = {
             method: ACTION_METHODS.READ
         }).done(function (persons) {
             console.info('done:', persons);
-            // save in persons as global variable
-            window.persons = persons;
+            PhoneBookLocalActions.load(persons);
             PhoneBook.display(persons);
         });
     },
@@ -50,7 +49,7 @@ window.PhoneBook = {
             }
         }).done(function (response) {
             if (response.success) {
-                PhoneBook.load();
+                PhoneBookLocalActions.delete(id);
             }
         });
     },
@@ -62,20 +61,21 @@ window.PhoneBook = {
             data: person
         }).done(function (response) {
             if (response.success) {
-                PhoneBook.load();
+                PhoneBook.cancelEdit();
+                PhoneBookLocalActions.add(person);
             }
         });
     },
 
-    save: function(person) {
+    update: function(person) {
         $.ajax({
             url: API.UPDATE,
             method: ACTION_METHODS.UPDATE,
             data: person
         }).done(function (response) {
             if (response.success) {
-                editId = '';
-                PhoneBook.load();
+                PhoneBook.cancelEdit();
+                PhoneBookLocalActions.update(person);
             }
         });
     },
@@ -83,7 +83,7 @@ window.PhoneBook = {
     bindEvents: function() {
         $('#phone-book tbody').delegate('a.edit', 'click', function () {
             var id = $(this).data('id');
-            PhoneBook.edit(id);
+            PhoneBook.startEdit(id);
         });
 
         $('#phone-book tbody').delegate('a.delete', 'click', function () {
@@ -101,7 +101,7 @@ window.PhoneBook = {
 
             if (editId) {
                 person.id = editId;
-                PhoneBook.save(person);
+                PhoneBook.update(person);
             } else {
                 PhoneBook.add(person);
             }
@@ -112,20 +112,18 @@ window.PhoneBook = {
             const value = this.value;
             PhoneBook.search(value);
         });
+        document.querySelector('.add-form').addEventListener('reset', function(ev) {
+            PhoneBook.search("");
+        });
     },
 
-    edit: function (id) {
+    startEdit: function (id) {
         // ES5 function systax inside find
         var editPerson = persons.find(function (person) {
             console.log(person.firstName);
             return person.id == id;
         });
-        console.warn('edit', editPerson);
-
-        if (editId) {
-            const cancelBtn = `<button onclick="PhoneBook.cancelEdit(this)">Cancel</button>`;
-            $('#phone-book tbody tr:last-child() td:last-child()').append(cancelBtn);
-        }
+        console.debug('startEdit', editPerson);
 
         $('input[name=firstName]').val(editPerson.firstName);
         $('input[name=lastName]').val(editPerson.lastName);
@@ -133,10 +131,9 @@ window.PhoneBook = {
         editId = id;
     },
 
-    cancelEdit: function(button) {
-        $( ".add-form" ).get(0).reset();
+    cancelEdit: function() {
         editId = '';
-        button.parentNode.removeChild(button);
+        document.querySelector(".add-form").reset();
     },
 
     display: function(persons) {
@@ -162,8 +159,32 @@ window.PhoneBook = {
 };
 
 
-// TODO update/remove/add items
-//window.PhoneBookLocalActions = {}
+// ES6 functions
+window.PhoneBookLocalActions = {
+    load: (persons) => {
+        // save in persons as global variable
+        window.persons = persons;
+    },
+    // ES6 functions (one param - no need pharanteses for arguments)
+    add: person => {
+        person.id = new Date().getTime();
+        persons.push(person);
+        PhoneBook.display(persons);
+    },
+    delete: id => {
+        var remainingPersons = persons.filter(person => person.id !== id);
+        window.persons = remainingPersons;
+        PhoneBook.display(remainingPersons);
+    },
+    update: person => {
+        const id = person.id;
+        var personToUpdate = persons.find(person => person.id === id);
+        personToUpdate.firstName = person.firstName;
+        personToUpdate.lastName = person.lastName;
+        personToUpdate.phone = person.phone;
+        PhoneBook.display(persons);
+    }
+}
 
 console.info('loading persons');
 PhoneBook.load();

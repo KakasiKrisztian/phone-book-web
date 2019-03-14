@@ -81,7 +81,10 @@
                             <td><input type="text" required name="firstName" placeholder="Enter first name"></td>
                             <td><input type="text" name="lastName" placeholder="Enter last name"></td>
                             <td><input type="text" required name="phone" placeholder="Enter phone"></td>
-                            <td><button type="submit">Save</button></td>
+                            <td>
+                                <button type="submit" title="Save">&#128190;</button>
+                                <button type="reset" onclick="PhoneBook.cancelEdit()" title="Cancel">&#10006;</button>
+                            </td>
                         </tr>
                     </tfoot>
                 </table>
