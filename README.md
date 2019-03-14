@@ -15,7 +15,7 @@ Open [https://nmatei.github.io/phone-book-html/](https://nmatei.github.io/phone-
 ## Configure the app (API)
 
 if you have an API that makes all CRUD operations, 
-you can integrate it by changing [js/phone-book.js](js/phone-book.js) **API_URL**
+you can integrate it by changing [js/phone-book.js](js/phone-book.js) **API** && **ACTION_METHODS**
 
 ### Enable Cors for external API
 
