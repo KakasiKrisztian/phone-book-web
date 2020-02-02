@@ -1,3 +1,40 @@
+// window.PhoneBook2={
+//     API_BASE_URL: "http://localhost:8081/agenda-contacts",
+//
+//     getRow: function(person) {
+//         return `<tr>
+//             <td>${person.firstName}</td>
+//             <td>${person.lastName}</td>
+//             <td>${person.phoneNumber}</td>
+//             <td>
+//                 <a href='#' data-id='${person.id}' class='delete'>&#10006;</a>
+//                 <a href='#' data-id='${person.id}' class='edit'>&#9998;</a>
+//             </td>
+//         </tr>`;
+//     },
+//
+//     getAgendaContacts: function () {
+//         $.ajax({
+//             url: PhoneBook2.API_BASE_URL,
+//         }).done(function (response) {
+//             console.log("Retrieved " + response);
+//             PhoneBook2.displayAgendaContacts(response.content);
+//
+//
+//         })
+//
+//     },
+//
+//     displayAgendaContacts: function (persons) {
+//         let personsHtml = " ";
+//
+//         persons.forEach(onePerson => personsHtml += PhoneBook2.getRow(onePerson));
+//
+//         $('#phone-book tbody').html(personsHtml);
+//
+//     }
+// };
+// PhoneBook2.getAgendaContacts();
 var persons = [];
 var editId;
 
@@ -21,7 +58,7 @@ window.PhoneBook = {
         return `<tr>
             <td>${person.firstName}</td>
             <td>${person.lastName}</td>
-            <td>${person.phoneNumber}</td>
+            <td>${person.phone}</td>
             <td>
                 <a href='#' data-id='${person.id}' class='delete'>&#10006;</a>
                 <a href='#' data-id='${person.id}' class='edit'>&#9998;</a>
@@ -58,7 +95,7 @@ window.PhoneBook = {
         $.ajax({
             url: API.CREATE,
             method: ACTION_METHODS.CREATE,
-            data: JSON.stringify(person)
+            data: person
         }).done(function (response) {
             if (response.success) {
                 PhoneBook.cancelEdit();
@@ -71,7 +108,7 @@ window.PhoneBook = {
         $.ajax({
             url: API.UPDATE,
             method: ACTION_METHODS.UPDATE,
-            data: JSON.parse(person)
+            data: person
         }).done(function (response) {
             if (response.success) {
                 PhoneBook.cancelEdit();
@@ -96,7 +133,7 @@ window.PhoneBook = {
             const person = {
                 firstName: $('input[name=firstName]').val(),
                 lastName: $('input[name=lastName]').val(),
-                phoneNumber: $('input[name=phone]').val()
+                phone: $('input[name=phone]').val()
             };
 
             if (editId) {
@@ -119,7 +156,7 @@ window.PhoneBook = {
 
     startEdit: function (id) {
         // ES5 function systax inside find
-        let editPerson = persons.find(function (person) {
+        var editPerson = persons.find(function (person) {
             console.log(person.firstName);
             return person.id == id;
         });
@@ -172,19 +209,19 @@ window.PhoneBookLocalActions = {
         PhoneBook.display(persons);
     },
     delete: id => {
-        let remainingPersons = persons.filter(person => person.id !== id);
+        var remainingPersons = persons.filter(person => person.id !== id);
         window.persons = remainingPersons;
         PhoneBook.display(remainingPersons);
     },
     update: person => {
         const id = person.id;
-        let personToUpdate = persons.find(person => person.id === id);
+        var personToUpdate = persons.find(person => person.id === id);
         personToUpdate.firstName = person.firstName;
         personToUpdate.lastName = person.lastName;
         personToUpdate.phone = person.phone;
         PhoneBook.display(persons);
     }
-};
+}
 
 console.info('loading persons');
 PhoneBook.load();
